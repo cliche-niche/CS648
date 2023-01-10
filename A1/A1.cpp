@@ -1,6 +1,7 @@
+#include <iostream>
 #include <vector>
 #include <algorithm>
-#include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -9,20 +10,18 @@ int pivot(vector<int> (&v), const int (&l), const int (&r), int p){
     // * Partitions the subarray v[l:r] about the pivot currently at index l<=p<=r
 
     swap(v[p], v[r]);
-    p = r;
+    p = l;
 
-    int i = l, j = l;
-    for(; i < r; i++){
-        if(v[i] < v[p]){
-            if(i != j){
-                swap(v[i], v[j]);
+    for(int i = l; i < r; i++){
+        if(v[i] < v[r]){
+            if(i != p){
+                swap(v[i], v[p]);
             }
-            j++;
+            p++;
         }
     }
 
-    swap(v[p], v[j]);
-    p = j;
+    swap(v[p], v[r]);
     return p;
 
     // just in case it might be needed later
@@ -54,7 +53,7 @@ int pivot(vector<int> (&v), const int (&l), const int (&r), int p){
 }
 
 void quick_sort(vector<int> (&v), const int (&l), const int (&r)){
-
+    // * Quick Sort the subarray v[l:r] (both ends inclusive) with the leftmost element as pivot
     if(l >= r){
         return;
     }
@@ -65,22 +64,75 @@ void quick_sort(vector<int> (&v), const int (&l), const int (&r)){
     return;
 }
 
-void random_quick_sort(vector<int> (&v), const int (&l), const int (&r)){
+void random_quick_sort(vector<int> (&v), const int (&l), const int (&r), uniform_int_distribution<> (&d), mt19937 (&g)){
+    // * Quick Sort the subarray v[l:r] (both ends inclusive) with random choice of pivot
+    if(l >= r){
+        return;
+    }
+
+    int p = d(g) % (r-l+1) + l; // Choose random pivot in the inclusive range [l, r]
+    p = pivot(v, l, r, p);
+    quick_sort(v, l, p-1);
+    quick_sort(v, p+1, r);
+    return;
 
     return;
 }
 
-void merge_sort(...){
-    // TODO : TO BE FILLED
+void merge(vector<int> (&v), int i, vector<int> (&left), vector<int> (&right)){
+    // * Merging starts from v[i], ends at a suitable index. The original array v is overwritten with elements of newer arrays
+    int le = 0, re = 0;                         // Number of elements read from left array, and right array
+    int ls = left.size(), rs = right.size();    // Sizes of the two arrays, "left" and "right"
+
+    // Standard code for merging two sorted arrays
+    while(le < ls && re < rs){
+        if(left[le] < right [re]){
+            v[i] = left[le];
+            i++; le++;
+        }else{
+            v[i] = right[re];
+            i++; re++;
+        }
+    }
+
+    while(le < ls){
+            v[i] = left[le];
+            i++; le++;
+    }
+
+    while(re < rs){
+        v[i] = right[re];
+        i++; re++;
+    }
+
+    return;
+}
+
+void merge_sort(vector<int> (&v), const int (&l), const int (&r)){
+    // * subarray v[l:r] to be sorted, both inclusive
+
+    if(l >= r){
+        return;
+    }
+
+    int m = (l+r)>>1;
+    merge_sort(v, l, m);        // Recur for left half
+    merge_sort(v, m+1, r);      // Recur for right half
+
+    vector<int> left(v.begin()+l, v.begin()+m+1), right(v.begin()+m+1, v.begin()+r+1); // Copy the two sorted halves
+
+    merge(v, l, left, right);   // Merge the two sorted halves
+
+    return;
 }
 
 int main(){
-    vector<int> V = {2, 4, 3, 5};
-    // vector<int> V = {9, 4, 1, 6, 10, 24, 5, 100};
-    // quick_sort(V, 0, 9);
-    pivot(V, 0, 3, 2);
-    for(int i : V) {
-        cout << i << " ";
-    }
+
+    // * For Randomized Quick Sort
+    // random_device rd;
+    // mt19937 gen(rd());
+    // uniform_int_distribution<> distr(0, n-1); // (distr(gen) % (r-l+1) + l) \in [l, r]
+    // ***************************
+
     return 0;
 }
