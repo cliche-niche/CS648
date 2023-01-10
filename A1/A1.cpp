@@ -1,5 +1,6 @@
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -23,6 +24,33 @@ int pivot(vector<int> (&v), const int (&l), const int (&r), int p){
     swap(v[p], v[j]);
     p = j;
     return p;
+
+    // just in case it might be needed later
+
+    // swap(v[p], v[r]);
+    // p = r;
+    // int s = l;
+    // int e = r;
+
+    // while(s < e) {
+    //     if(v[s] > v[p]) {
+    //         if(v[e] < v[p]) {
+    //             swap(v[s], v[e]);
+    //             s++;
+    //             e--;
+    //         }
+    //         else {
+    //             e--;
+    //         }
+    //     }
+    //     else {
+    //         s++;
+    //     }
+    // }
+
+    // swap(v[p], v[s]);
+    // p = s;
+    // return p; 
 }
 
 void quick_sort(vector<int> (&v), const int (&l), const int (&r)){
@@ -47,6 +75,12 @@ void merge_sort(...){
 }
 
 int main(){
-
+    vector<int> V = {2, 4, 3, 5};
+    // vector<int> V = {9, 4, 1, 6, 10, 24, 5, 100};
+    // quick_sort(V, 0, 9);
+    pivot(V, 0, 3, 2);
+    for(int i : V) {
+        cout << i << " ";
+    }
     return 0;
 }
