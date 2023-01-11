@@ -2,10 +2,18 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <chrono>
+
+#define ITERATIONS 5000
 
 using namespace std;
 
-int pivot(vector<int> (&v), const int (&l), const int (&r), int p){
+uint64_t timeSinceEpochMillisec() {
+    using namespace chrono;
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
+
+int pivot(vector<double> (&v), const int (&l), const int (&r), int p){
     // * v : vector, l : left end (inclusive), r : right end (inclusive), p : initial position of pivot [l, r]
     // * Partitions the subarray v[l:r] about the pivot currently at index l<=p<=r
 
@@ -52,7 +60,7 @@ int pivot(vector<int> (&v), const int (&l), const int (&r), int p){
     // return p; 
 }
 
-void quick_sort(vector<int> (&v), const int (&l), const int (&r)){
+void quick_sort(vector<double> (&v), const int (&l), const int (&r)){
     // * Quick Sort the subarray v[l:r] (both ends inclusive) with the leftmost element as pivot
     if(l >= r){
         return;
@@ -64,7 +72,7 @@ void quick_sort(vector<int> (&v), const int (&l), const int (&r)){
     return;
 }
 
-void random_quick_sort(vector<int> (&v), const int (&l), const int (&r), uniform_int_distribution<> (&d), mt19937 (&g)){
+void random_quick_sort(vector<double> (&v), const int (&l), const int (&r), uniform_int_distribution<> (&d), mt19937 (&g)){
     // * Quick Sort the subarray v[l:r] (both ends inclusive) with random choice of pivot
     if(l >= r){
         return;
@@ -127,12 +135,60 @@ void merge_sort(vector<int> (&v), const int (&l), const int (&r)){
 }
 
 int main(){
+    int QUESTION;
+    vector<int> ARRAY_SIZES = {(int)1e2, (int)1e3, (int)1e4, (int)1e5, (int)1e6};
+    cout << "Enter question number to generate data for\n";
+    cin >> QUESTION;
 
-    // * For Randomized Quick Sort
-    // random_device rd;
-    // mt19937 gen(rd());
-    // uniform_int_distribution<> distr(0, n-1); // (distr(gen) % (r-l+1) + l) \in [l, r]
-    // ***************************
+    switch(QUESTION) {
+        case 1: 
+        for (int n : ARRAY_SIZES) {
+            random_device rd;   // seeding the
+            mt19937 gen(rd());  // randomizer
+            uniform_real_distribution<> distr_r(0, 1);  // generate a random float between 0 and 1
+            uniform_int_distribution<> distr_i(0, n-1); // generate a random integer between 0 and n-1
+            vector<double> V;
+
+            // * For Randomized Quick Sort
+            while(n--) { V.push_back(distr_r(gen)); } // generating the random array
+            n = V.size();
+
+            for(int i = 0; i < ITERATIONS; i++) {
+                vector<double> copy_V(V);
+                int s = timeSinceEpochMillisec();
+                random_quick_sort(copy_V, 0, n-1, distr_i, gen);
+                int e = timeSinceEpochMillisec();
+
+                // file writing here
+            }
+            V.clear();
+            // ***************************
+
+            // * For Quick Sort
+            for(int i = 0; i < ITERATIONS; i++) {
+                while(n--) { V.push_back(distr_r(gen)); } // generating random array
+                n = V.size();
+                
+                int s = timeSinceEpochMillisec();
+                quick_sort(V, 0, n-1);
+                int e = timeSinceEpochMillisec();
+
+                // file writing here
+                V.clear();
+            }
+        }
+        break;
+
+        case 2:
+
+        break;
+
+        case 3:
+
+        break;
+
+        default: cout << "Invalid input\n";
+    }
 
     return 0;
 }
