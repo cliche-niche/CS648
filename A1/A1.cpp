@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <chrono>
 
-#define ITERATIONS 5
+#define ITERATIONS 100
 
 using namespace std;
 
@@ -113,11 +113,11 @@ uint64_t merge_sort(vector<double> (&v), const int (&l), const int (&r)){
 
 int main(){
     int QUESTION;
-    vector<int> ARRAY_SIZES = {(int)30}; //{(int)1e2, (int)1e3, (int)1e4, (int)1e5, (int)1e6};
+    vector<int> ARRAY_SIZES = {(int)1e5};
     cout << "Enter question number to generate data for:\n";
     cin >> QUESTION;
 
-    ofstream outfile("datax.csv");
+    ofstream outfile("dataQ1_5.csv");
 
     switch(QUESTION) {
         // Quick Sort v/s Randomized Quick Sort
@@ -164,8 +164,6 @@ int main(){
                 
                 cout << "Iteration done!\n";
             }
-            
-            outfile<<endl;
         }
         break;
 
@@ -206,8 +204,6 @@ int main(){
 
                 cout << "Iteration done!\n";
             }
-
-            outfile<<endl;
         }
         break;
 
@@ -239,8 +235,6 @@ int main(){
 
                 cout << "Iteration done!\n";
             }
-
-            outfile<<endl;
         }
         break;
 
@@ -274,6 +268,5 @@ int main(){
     }
 
     outfile.close();
-
     return 0;
 }
