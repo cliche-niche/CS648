@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <chrono>
 
-#define ITERATIONS 100
+#define ITERATIONS 2000
 
 using namespace std;
 
@@ -41,7 +41,8 @@ uint64_t quick_sort(vector<double> (&v), const int (&l), const int (&r)){
         return 0;
     }
 
-    uint64_t c = r-l, p = pivot(v, l, r, l); // c = Number of comparisons, Default p = pivot is the first element in the subarray
+    // c = Number of comparisons, Default p = pivot is the first element in the subarray
+    uint64_t c = r-l, p = pivot(v, l, r, l);
     c += quick_sort(v, l, p-1);
     c += quick_sort(v, p+1, r);
     return c;
@@ -53,10 +54,10 @@ uint64_t random_quick_sort(vector<double> (&v), const int (&l), const int (&r), 
         return 0;
     }
 
-    uint64_t c = r-l, p = d(g) % (r-l+1) + l; // Choose random pivot in the inclusive range [l, r]
+    uint64_t c = r-l, p = (d(g) % (r-l+1)) + l; // Choose random pivot in the inclusive range [l, r]
     p = pivot(v, l, r, p);
-    c += quick_sort(v, l, p-1);
-    c += quick_sort(v, p+1, r);
+    c += random_quick_sort(v, l, p-1, d, g);
+    c += random_quick_sort(v, p+1, r, d, g);
     return c;
 }
 
@@ -113,11 +114,11 @@ uint64_t merge_sort(vector<double> (&v), const int (&l), const int (&r)){
 
 int main(){
     int QUESTION;
-    vector<int> ARRAY_SIZES = {(int)1e5};
+    vector<int> ARRAY_SIZES = {(int)1e2, (int)1e3, (int)1e4};
     cout << "Enter question number to generate data for:\n";
     cin >> QUESTION;
 
-    ofstream outfile("dataQ1_5.csv");
+    ofstream outfile("dataQ1_2_3_4.csv");
 
     switch(QUESTION) {
         // Quick Sort v/s Randomized Quick Sort
@@ -238,9 +239,9 @@ int main(){
         }
         break;
 
-        // case for debugging
+        // case 4 debugging
         case 4:
-        for (int n : ARRAY_SIZES) {
+        for (int n =20; n<21; n++) {
             random_device rd;   // seeding the
             mt19937 gen(rd());  // randomizer
             uniform_real_distribution<> distr_r(0, 1);  // generate a random float between 0 and 1
@@ -249,20 +250,46 @@ int main(){
 
             while(n--) { v.push_back(-n); } // generating the random array
             n = v.size();
-            v_qs = v;
+            
+            for(auto i : v){
+                cout<<i<<' ';
+            }
+            cout<<'\n';
+
+                v_rqs = v;
 
             for(int i = 0; i < ITERATIONS; i++) {
-                v_rqs = v;
-                // shuffle(v_qs.begin(), v_qs.end(), default_random_engine(get_time_mili()));
-                
                 int s_qs1, e_qs1, e_qs2 = 0;
                 uint64_t c_qs = 0;
                 
                 s_qs1 = get_time_mili();
-                c_qs = quick_sort(v_qs, 0, n-1);
+                c_qs = random_quick_sort(v_rqs, 0, n-1, distr_i, gen);
                 e_qs1 = get_time_mili();
+                
+                for(auto i:v_rqs){
+                    cout<<i<<' ';
+                }
+                cout<<"comps "<<c_qs<< '\n';
             }
+
+            for(int i=0; i< ITERATIONS; i++){
+                shuffle(v_rqs.begin(), v_rqs.end(), default_random_engine(get_time_mili()));
+                int s_qs1, e_qs1, e_qs2 = 0;
+                uint64_t c_qs = 0;
+                
+                s_qs1 = get_time_mili();
+                c_qs = random_quick_sort(v_rqs, 0, n-1, distr_i, gen);
+                e_qs1 = get_time_mili();
+                
+                for(auto i:v_rqs){
+                    cout<<i<<' ';
+                }
+                cout<<"comps "<<c_qs<< '\n';
+            }
+
+            break;
         }
+        break;
 
         default: cout << "Invalid input\n";
     }
