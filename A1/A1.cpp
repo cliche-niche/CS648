@@ -141,20 +141,20 @@ int main(){
                 int s_qs1, e_qs1, e_qs2 = 0;
                 uint64_t c_qs = 0;
                 
-                s_qs1 = get_time_mili();
+                s_qs1 = get_time_micro();
                 c_qs = quick_sort(v_qs, 0, n-1);
-                e_qs1 = get_time_mili();
+                e_qs1 = get_time_micro();
                 quick_sort(v_qs, 0, n-1);
-                e_qs2 = get_time_mili();
+                e_qs2 = get_time_micro();
 
                 int s_rqs1, e_rqs1, e_rqs2 = 0;
                 uint64_t c_rqs = 0;
 
-                s_rqs1 = get_time_mili();
+                s_rqs1 = get_time_micro();
                 c_rqs = random_quick_sort(v_rqs, 0, n-1, distr_i, gen);
-                e_rqs1 = get_time_mili();
+                e_rqs1 = get_time_micro();
                 random_quick_sort(v_rqs, 0, n-1, distr_i, gen);
-                e_rqs2 = get_time_mili();
+                e_rqs2 = get_time_micro();
   
                 if(outfile.is_open()) {
                     outfile << n << "," << (e_qs1 - s_qs1) << "," << (e_rqs1 - s_rqs1) << "," << c_qs \
