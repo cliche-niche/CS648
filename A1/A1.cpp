@@ -123,6 +123,7 @@ int main(){
     switch(QUESTION) {
         // Quick Sort v/s Randomized Quick Sort
         case 1: 
+        outfile << "n,rt_qs,rt_rqs,c_qs,c_rqs,dst_qs,dst_rqs\n";
         for (int n : ARRAY_SIZES) {
             random_device rd;   // seeding the
             mt19937 gen(rd());  // randomizer
@@ -170,6 +171,7 @@ int main(){
 
         // Randomized Quick Sort v/s Merge Sort
         case 2:
+        outfile << "n,rt_qs,rt_ms,c_qs,c_ms\n";
         for (int n : ARRAY_SIZES) {
             random_device rd;   // seeding the
             mt19937 gen(rd());  // randomizer
@@ -209,6 +211,7 @@ int main(){
         break;
 
         case 3:
+        outfile << "n,rt_qs,c_qs\n";
         for (int n : ARRAY_SIZES) {
             random_device rd;   // seeding the
             mt19937 gen(rd());  // randomizer
