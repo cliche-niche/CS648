@@ -118,7 +118,7 @@ int main(){
     cout << "Enter question number to generate data for:\n";
     cin >> QUESTION;
 
-    ofstream outfile("dataQ2.csv");
+    ofstream outfile("dataQ3.csv");
 
     switch(QUESTION) {
         // Quick Sort v/s Randomized Quick Sort
