@@ -229,9 +229,9 @@ int main(){
                 int s_qs1, e_qs1 = 0;
                 uint64_t c_qs = 0;
                 
-                s_qs1 = get_time_mili();
+                s_qs1 = get_time_micro();
                 c_qs = quick_sort(v_qs, 0, n-1);
-                e_qs1 = get_time_mili();
+                e_qs1 = get_time_micro();
 
                 if(outfile.is_open()) {
                     outfile << n << "," << (e_qs1 - s_qs1) << "," << c_qs << endl;
