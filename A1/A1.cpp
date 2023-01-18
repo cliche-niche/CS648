@@ -202,7 +202,7 @@ int main(){
 
 
                 if(outfile.is_open()) {
-                    outfile << n << " " << (e_qs1 - s_qs1) << "," << (e_ms1 - s_ms1) << "," << c_qs << "," << c_ms << endl;
+                    outfile << n << "," << (e_qs1 - s_qs1) << "," << (e_ms1 - s_ms1) << "," << c_qs << "," << c_ms << endl;
                 }
 
                 cout << "Iteration done!\n";
